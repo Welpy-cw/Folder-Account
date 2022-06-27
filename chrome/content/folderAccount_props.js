@@ -174,6 +174,8 @@ var folderAccountProps = {
 function onLoad(activatedWhileWindowOpen) {
   if (AppConstants.platform == "linux")
     window.resizeBy(35, 0);
+  else if (AppConstants.platform == "macosx")
+    window.resizeBy(150, 0);
   WL.injectCSS("chrome://messenger/skin/menulist.css");
   WL.injectCSS("chrome://messenger/skin/input-fields.css");
   WL.injectElements(`
