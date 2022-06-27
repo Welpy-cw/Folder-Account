@@ -1,3 +1,5 @@
+var { AppConstants } = ChromeUtils.import("resource://gre/modules/AppConstants.jsm");
+
 Services.scriptloader.loadSubScript("chrome://folderaccount/content/scripts/notifyTools/notifyTools.js", window);
 
 var folderAccountProps = {
@@ -170,7 +172,8 @@ var folderAccountProps = {
 };
 
 function onLoad(activatedWhileWindowOpen) {
-  WL.injectCSS("chrome://messenger/skin/menulist.css");
+  if (AppConstants.platform == "linux")
+      window.resizeBy(35, 0);  WL.injectCSS("chrome://messenger/skin/menulist.css");
   WL.injectCSS("chrome://messenger/skin/input-fields.css");
   WL.injectElements(`
     <tab id="FolderAccountTab" label="Folder Account" insertafter="GeneralTab"/>
@@ -201,7 +204,6 @@ function onLoad(activatedWhileWindowOpen) {
       </vbox>
     </vbox>
   `);
-  window.resizeTo(605, 305);
   folderAccountProps.addTab();
 }
 
