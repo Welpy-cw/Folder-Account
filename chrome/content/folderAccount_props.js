@@ -173,7 +173,8 @@ var folderAccountProps = {
 
 function onLoad(activatedWhileWindowOpen) {
   if (AppConstants.platform == "linux")
-      window.resizeBy(35, 0);  WL.injectCSS("chrome://messenger/skin/menulist.css");
+    window.resizeBy(35, 0);
+  WL.injectCSS("chrome://messenger/skin/menulist.css");
   WL.injectCSS("chrome://messenger/skin/input-fields.css");
   WL.injectElements(`
     <tab id="FolderAccountTab" label="Folder Account" insertafter="GeneralTab"/>
