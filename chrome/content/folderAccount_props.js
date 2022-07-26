@@ -1,5 +1,3 @@
-var { AppConstants } = ChromeUtils.import("resource://gre/modules/AppConstants.jsm");
-
 Services.scriptloader.loadSubScript("chrome://folderaccount/content/scripts/notifyTools/notifyTools.js", window);
 
 var folderAccountProps = {

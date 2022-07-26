@@ -3,8 +3,8 @@
   "applications": {
     "gecko": {
       "id": "{C8534C26-F59A-11DA-9804-B622A1EF5492}",
-      "strict_min_version": "102.1",
-      "strict_max_version": "103.*"
+      "strict_min_version": "102.0",
+      "strict_max_version": "103.0"
     }
   },
   "name": "Folder Account",
