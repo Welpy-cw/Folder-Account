@@ -3,7 +3,7 @@
   "applications": {
     "gecko": {
       "id": "{C8534C26-F59A-11DA-9804-B622A1EF5492}",
-      "strict_min_version": "111.0a1",
+      "strict_min_version": "115.*",
       "strict_max_version": "*"
     }
   },
@@ -14,7 +14,7 @@
   "icons": {
     "64": "icon.png"
   },
-  "version": "11.3.1",
+  "version": "11.3.2",
   "experiment_apis": {
     "NotifyTools": {
       "schema": "api/NotifyTools/schema.json",

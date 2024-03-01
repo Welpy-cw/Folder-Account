@@ -144,25 +144,16 @@ var folderAccountCompose = {
 
     ComposeProcessDone: function (aResult) {},
     SaveInFolderDone: function (folderURI) {}
-  },
-
-  /**
-   * This is called when the var gMsgCompose is init. We now take
-   * the extraArguments value and listen for state changes so
-   * we know when the editor is finished.
-   */
-  windowInit: function () {
-    window.gMsgCompose.RegisterStateListener(folderAccountCompose.folderAccountStateListener);
   }
 
 };
 
 function onLoad(activatedWhileWindowOpen) {
-  window.addEventListener("compose-window-init", function () {
-    folderAccountCompose.windowInit();
-  }, true);
+  window.gMsgCompose.RegisterStateListener(folderAccountCompose.folderAccountStateListener);
 }
 
-function onUnload(deactivatedWhileWindowOpen) {}
+function onUnload(deactivatedWhileWindowOpen) {
+  window.gMsgCompose.UnregisterStateListener(folderAccountCompose.folderAccountStateListener);
+}
 
 Services.scriptloader.loadSubScript("chrome://folderaccount/content/scripts/notifyTools/notifyTools.js", folderAccountCompose, "UTF-8");
