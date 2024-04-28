@@ -47,7 +47,7 @@ var folderAccount = {
           return [MailServices.accounts.getIdentity(identityKey), null];
       }
     } catch (e) {
-      console.log("Folder Account: error in getIdentityForHeaderOverride():", e);
+      console.error("Folder Account: error in getIdentityForHeaderOverride():", e);
     }
     return getIdentityForHeaderOriginal.apply(this, arguments);
   },
@@ -57,10 +57,10 @@ var folderAccount = {
   hookArchiveFunction: function (enable) {
     if (enable) {
       MailUtils.getIdentityForHeader = folderAccount.getIdentityForHeaderOverride;
-      console.log("Folder Account: hooked into archive function");
+      console.info("Folder Account: hooked into archive function");
     } else if (this.archiveFunctionHooked) {
       MailUtils.getIdentityForHeader = getIdentityForHeaderOriginal;
-      console.log("Folder Account: restored original archive function");
+      console.info("Folder Account: restored original archive function");
     }
     this.archiveFunctionHooked = enable;
   },
@@ -91,7 +91,7 @@ var folderAccount = {
         Services.prefs.clearUserPref(prefName);
       }
     } catch (e) {
-      console.log("Folder Account: error migrating sortAccounts preference:", e);
+      console.error("Folder Account: error migrating sortAccounts preference:", e);
     }
   },
 

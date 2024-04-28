@@ -47,7 +47,7 @@ var folderAccountCompose = {
       folderURI = displayedFolder.URI;
       folderIsVirtual = Boolean(displayedFolder.flags & Ci.nsMsgFolderFlags.Virtual);
     } catch (e) {
-      console.log("Folder Account: error in changeComposeDetails:", e);
+      console.error("Folder Account: error in changeComposeDetails:", e);
     }
 
     if (details.type != "new" && !(folderIsVirtual && folderAccountCompose.getPrefs(folderURI, ""))) {
