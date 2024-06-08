@@ -98,7 +98,9 @@ export async function getCustomComposeDetails(
 }
 
 export async function updateSettings(originalFolder, renamedFolder) {
-  const [settings] = Object.values(await browser.storage.local.get(originalFolder.id));
+  const [settings] = Object.values(
+    await browser.storage.local.get(originalFolder.id)
+  );
   if (!settings) {
     return;
   }

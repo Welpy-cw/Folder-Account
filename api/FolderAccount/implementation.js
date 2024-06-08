@@ -22,7 +22,7 @@ var FolderAccount = class extends ExtensionCommon.ExtensionAPI {
             realTabWindow.gMsgCompose.originalMsgURI
           ).folder;
           return context.extension.folderManager.convert(folder);
-          },
+        },
         async getFolderAccountSettings() {
           const folderPrefs = new Map();
           const branch = Services.prefs.getBranch("extensions.folderaccount.");
@@ -38,7 +38,11 @@ var FolderAccount = class extends ExtensionCommon.ExtensionAPI {
             );
             const folderURI = matches.groups["folder"];
             const settingKey = matches.groups["setting"] ?? "identityId";
-            if (/addToCcOnReply|overrideReturnAddress|replyToOnReplyForward/.test(settingKey)) {
+            if (
+              /addToCcOnReply|overrideReturnAddress|replyToOnReplyForward/.test(
+                settingKey
+              )
+            ) {
               pref = pref == "true";
             }
             folderPrefs.set(folderURI, {

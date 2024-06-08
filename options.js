@@ -17,11 +17,12 @@ async function restore_options() {
 function change_options(event) {
   let node = event.target;
   let defaultPrefs = Object.keys(DEFAULT_PREFERENCES);
-  let isPreference = defaultPrefs.includes(node.id) || defaultPrefs.includes(node.name);
+  let isPreference =
+    defaultPrefs.includes(node.id) || defaultPrefs.includes(node.name);
   if (!node.id || node.localName != "input" || !isPreference) return;
   if (node.getAttribute("type") == "checkbox") {
     messenger.storage.local.set({
-      [node.id]: node.checked
+      [node.id]: node.checked,
     });
   }
 }

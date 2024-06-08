@@ -66,7 +66,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   const [settings] = Object.values(await browser.storage.local.get(folderId));
-  const [sortIdentities] = Object.values(await browser.storage.local.get("sortIdentities"));
+  const [sortIdentities] = Object.values(
+    await browser.storage.local.get("sortIdentities")
+  );
 
   const menuList = document.getElementById("identityId");
   const option = document.createElement("option");
@@ -94,7 +96,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     let entriesArray = Object.entries(menuListEntries);
     if (sortIdentities)
-      entriesArray = entriesArray.sort(([, a], [, b]) => (a > b));
+      entriesArray = entriesArray.sort(([, a], [, b]) => a > b);
     const separator = document.createElement("hr");
     menuList.appendChild(separator);
     for (const [id, text] of entriesArray) {
