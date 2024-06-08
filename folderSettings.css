@@ -1,0 +1,21 @@
+html {
+  background-color: light-dark(#fafafa, #27272a);
+}
+
+fieldset {
+  display: grid;
+  margin: 1em;
+}
+
+.option {
+  margin-top: 5px;
+  margin-left: 4px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: end;
+  margin: 1em;
+  right: 0;
+  flex-grow: 1;
+}

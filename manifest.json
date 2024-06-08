@@ -1,52 +1,51 @@
 {
   "manifest_version": 2,
-  "applications": {
+  "name": "Folder Account",
+  "description": "Associate an account or identity with a particular folder",
+  "version": "12.0",
+  "author": "Hartmut Welpmann",
+  "homepage_url": "https://github.com/Welpy-cw/Folder-Account",
+  "browser_specific_settings": {
     "gecko": {
       "id": "{C8534C26-F59A-11DA-9804-B622A1EF5492}",
       "strict_min_version": "115.0",
-      "strict_max_version": "128.*"
+      "strict_max_version": "*"
     }
   },
-  "name": "Folder Account",
-  "author": "Christopher Eykamp (updated by H. Welpmann)",
-  "description": "Associate an account or identity with a particular folder",
-  "homepage_url": "https://github.com/Welpy-cw/Folder-Account",
   "icons": {
     "64": "icon.png"
   },
-  "version": "11.3.2",
-  "experiment_apis": {
-    "NotifyTools": {
-      "schema": "api/NotifyTools/schema.json",
-      "parent": {
-        "scopes": ["addon_parent"],
-        "paths": [
-          ["NotifyTools"]
-        ],
-        "script": "api/NotifyTools/implementation.js",
-        "events": ["startup"]
-      }
-    },
-    "WindowListener": {
-      "schema": "api/WindowListener/schema.json",
-      "parent": {
-        "scopes": ["addon_parent"],
-        "paths": [
-          ["WindowListener"]
-        ],
-        "script": "api/WindowListener/implementation.js"
-      }
-    }
-  },
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["background.js"],
+    "type": "module"
   },
   "options_ui": {
     "page": "options.html"
   },
   "permissions": [
+    "accountsFolders",
     "accountsRead",
     "compose",
+    "menus",
+    "activeTab",
     "storage"
-  ]
+  ],
+  "experiment_apis": {
+    "LegacyPrefs": {
+      "schema": "api/LegacyPrefs/schema.json",
+      "parent": {
+        "scopes": ["addon_parent"],
+        "paths": [["LegacyPrefs"]],
+        "script": "api/LegacyPrefs/implementation.js"
+      }
+    },
+    "FolderAccount": {
+      "schema": "api/FolderAccount/schema.json",
+      "parent": {
+        "scopes": ["addon_parent"],
+        "paths": [["FolderAccount"]],
+        "script": "api/FolderAccount/implementation.js"
+      }
+    }
+  }
 }

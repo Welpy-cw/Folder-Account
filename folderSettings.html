@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Preferences</title>
+  <script type="text/javascript" src="folderSettings.js"></script>
+  <link rel="stylesheet" href="chrome://global/skin/global.css" />
+  <link rel="stylesheet" href="chrome://global/skin/in-content/common.css" />
+  <link rel="stylesheet" href="folderSettings.css" />
+</head>
+
+<body>
+  <vbox>
+    <fieldset>
+      <legend>From Account:</legend>
+      <select id="identityId">
+      </select>
+      <div class="option">
+        <input type="checkbox" id="overrideReturnAddress">
+        <label for="overrideReturnAddress">Ignore on Reply (i.e. let Thunderbird choose)</label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Default To:</legend>
+      <input type="email" id="to">
+      <div class="option">
+        <input type="checkbox" id="addToCcOnReply">
+        <label for="addToCcOnReply">Add to CC list on Reply</label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Additional Reply-To:</legend>
+      <input type="email" id="replyTo">
+      <div class="option">
+        <input type="checkbox" id="replyToOnReplyForward">
+        <label for="replyToOnReplyForward">Use also on Reply and Forward</label>
+      </div>
+    </fieldset>
+  </vbox>
+  <moz-button-group class="buttons">
+    <button id="cancel-button" type="button">Cancel</button>
+    <button id="save-button" type="submit">Save</button>
+  </moz-button-group>
+</body>
+
+</html>
