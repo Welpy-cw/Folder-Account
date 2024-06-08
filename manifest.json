@@ -31,14 +31,6 @@
     "storage"
   ],
   "experiment_apis": {
-    "LegacyPrefs": {
-      "schema": "api/LegacyPrefs/schema.json",
-      "parent": {
-        "scopes": ["addon_parent"],
-        "paths": [["LegacyPrefs"]],
-        "script": "api/LegacyPrefs/implementation.js"
-      }
-    },
     "FolderAccount": {
       "schema": "api/FolderAccount/schema.json",
       "parent": {
