@@ -10,11 +10,6 @@ var FolderAccount = class extends ExtensionCommon.ExtensionAPI {
   getAPI(context) {
     return {
       FolderAccount: {
-        async getDisplayedFolder(tabId) {
-          return context.extension.folderManager.convert(
-            context.extension.tabManager.get(tabId).nativeTab.folder
-          );
-        },
         async getRelatedMessageFolder(tabId) {
           const tabObject = context.extension.tabManager.get(tabId);
           const realTabWindow = tabObject.window;

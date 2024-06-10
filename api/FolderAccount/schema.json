@@ -3,19 +3,6 @@
     "namespace": "FolderAccount",
     "functions": [
       {
-        "name": "getDisplayedFolder",
-        "description": "Get the currently displayed folder in the tab",
-        "type": "function",
-        "async": true,
-        "parameters": [
-          {
-            "name": "tabId",
-            "description": "The last focused tab",
-            "type": "integer"
-          }
-        ]
-      },
-      {
         "name": "getRelatedMessageFolder",
         "description": "Get the folder of the related message of the currently displayed compose window",
         "type": "function",

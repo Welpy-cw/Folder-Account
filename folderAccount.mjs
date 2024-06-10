@@ -23,9 +23,10 @@ export async function getCustomComposeDetails(
     return {};
   }
 
-  let folder = await messenger.FolderAccount.getDisplayedFolder(
-    lastFocusedTabId
-  );
+  let folder = (await messenger.mailTabs.get(lastFocusedTabId)).displayedFolder;
+  if (!folder) {
+    return {};
+  }
 
   let [settings] = Object.values(await browser.storage.local.get(folder.id));
   // In case of reply, forward and redirect use the folder containing the
