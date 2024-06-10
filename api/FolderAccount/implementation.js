@@ -10,14 +10,6 @@ var FolderAccount = class extends ExtensionCommon.ExtensionAPI {
   getAPI(context) {
     return {
       FolderAccount: {
-        async getRelatedMessageFolder(tabId) {
-          const tabObject = context.extension.tabManager.get(tabId);
-          const realTabWindow = tabObject.window;
-          const folder = realTabWindow.gMessenger.msgHdrFromURI(
-            realTabWindow.gMsgCompose.originalMsgURI
-          ).folder;
-          return context.extension.folderManager.convert(folder);
-        },
         async getFolderAccountSettings() {
           const folderPrefs = new Map();
           const branch = Services.prefs.getBranch("extensions.folderaccount.");

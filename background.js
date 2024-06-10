@@ -6,16 +6,20 @@ let lastFocusedWindow = messenger.windows.WINDOW_ID_NONE;
 messenger.windows.getCurrent().then((w) => (lastFocusedWindow = w.id));
 
 messenger.windows.onFocusChanged.addListener(async (windowId) => {
-  if (windowId < 0) return;
+  if (windowId < 0) {
+    return;
+  }
+
   let focusedWindow = await messenger.windows.get(windowId);
-  if (focusedWindow?.type == "messageCompose") return;
+  if (focusedWindow?.type == "messageCompose") {
+    return;
+  }
+
   lastFocusedWindow = windowId;
-  console.log("Folder Account: Last focused window:", lastFocusedWindow);
 });
 
 messenger.folders.onRenamed.addListener(
   async (originalFolder, renamedFolder) => {
-    console.log("Folder Account:", originalFolder, renamedFolder);
     await folderAccount.updateSettings(originalFolder, renamedFolder);
   }
 );
@@ -28,11 +32,22 @@ messenger.menus.create({
   id: menuId,
 });
 
+messenger.menus.onShown.addListener((info, tab) => {
+  if (!info.contexts.includes("folder_pane")) {
+    return;
+  }
+
+  messenger.menus.update(menuId, {
+    visible: Boolean(info.selectedFolder),
+  });
+  messenger.menus.refresh();
+});
+
 messenger.menus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId != menuId) {
     return;
   }
-  console.log("Folder Account:", info.selectedFolder);
+
   const folder = info.selectedFolder;
   const params = new URLSearchParams({
     id: folder.id,
@@ -50,7 +65,9 @@ messenger.menus.onClicked.addListener(async (info, tab) => {
 });
 
 messenger.windows.onCreated.addListener(async (window) => {
-  if (window.type != "messageCompose") return;
+  if (window.type != "messageCompose") {
+    return;
+  }
 
   let [currentTab] = await messenger.tabs.query({ windowId: window.id });
   let [lastFocusedMailTab] = await messenger.tabs.query({
@@ -65,7 +82,6 @@ messenger.windows.onCreated.addListener(async (window) => {
   const details = await messenger.compose.getComposeDetails(currentTab.id);
   const customDetails = await folderAccount.getCustomComposeDetails(
     details,
-    currentTab.id,
     lastFocusedMailTab.id
   );
   await messenger.compose.setComposeDetails(currentTab.id, customDetails);

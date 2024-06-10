@@ -4,21 +4,15 @@ export async function checkForMigration() {
   if (kAlreadyMigrated in results) {
     return;
   }
+
   await browser.storage.local.set({ [kAlreadyMigrated]: true });
   const settings = await messenger.FolderAccount.getFolderAccountSettings();
-  console.log(settings);
   settings.forEach(async (value, key) => {
-    console.log(key);
-    console.log(value);
     await browser.storage.local.set({ [key]: value });
   });
 }
 
-export async function getCustomComposeDetails(
-  details,
-  currentTabId,
-  lastFocusedTabId
-) {
+export async function getCustomComposeDetails(details, lastFocusedTabId) {
   if (details.type == "draft") {
     return {};
   }
@@ -33,9 +27,14 @@ export async function getCustomComposeDetails(
   // related message, unless it is shown in a saved search folder with
   // applicable settings.
   if (details.type != "new" && !(folder.isVirtual && settings)) {
-    folder = await messenger.FolderAccount.getRelatedMessageFolder(
-      currentTabId
-    );
+    const relatedMessage = await messenger.messages
+      .get(details.relatedMessageId)
+      .catch((e) => {
+        console.warn("Could not find related message:", e);
+      });
+    if (relatedMessage.folder) {
+      folder = relatedMessage.folder;
+    }
   }
 
   if (!settings) {
@@ -105,6 +104,7 @@ export async function updateSettings(originalFolder, renamedFolder) {
   if (!settings) {
     return;
   }
+
   await browser.storage.local.set({ [renamedFolder.id]: settings });
   await browser.storage.local.remove(originalFolder.id);
 }
