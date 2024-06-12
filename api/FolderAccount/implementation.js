@@ -20,6 +20,7 @@ var FolderAccount = class extends ExtensionCommon.ExtensionAPI {
             } catch (e) {
               continue;
             }
+            console.info("Migrating FolderAccount preference\n", child, pref);
             const matches = child.match(
               /(?<setting>addToCcOnReply|overrideReturnAddress|replyTo(OnReplyForward)?|to)?\.?(?<folder>.*)/
             );
