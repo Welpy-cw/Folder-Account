@@ -52,15 +52,15 @@ messenger.menus.onClicked.addListener(async (info, tab) => {
   const params = new URLSearchParams({
     id: folder.id,
   });
-  const [windowSize] = Object.values(
-    await browser.storage.local.get("windowSize")
-  );
+  const { windowSize } = await browser.storage.local.get({
+    windowSize: { height: 400, width: 600 },
+  });
   messenger.windows.create({
     type: "popup",
     url: `folderSettings.html?${params}`,
     allowScriptsToClose: true,
-    height: windowSize?.height ?? 400,
-    width: windowSize?.width ?? 600,
+    height: windowSize.height,
+    width: windowSize.width,
   });
 });
 

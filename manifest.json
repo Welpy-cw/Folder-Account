@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Folder Account",
-  "description": "Associate an account or identity with a particular folder",
+  "description": "Associate an account or identity with a folder",
   "version": "12.0",
   "author": "Hartmut Welpmann",
   "homepage_url": "https://github.com/Welpy-cw/Folder-Account",
@@ -9,7 +9,7 @@
     "gecko": {
       "id": "{C8534C26-F59A-11DA-9804-B622A1EF5492}",
       "strict_min_version": "127.0",
-      "strict_max_version": "128.*"
+      "strict_max_version": "129.0"
     }
   },
   "icons": {
@@ -25,10 +25,10 @@
   "permissions": [
     "accountsFolders",
     "accountsRead",
+    "activeTab",
     "compose",
     "menus",
     "messagesRead",
-    "activeTab",
     "storage"
   ],
   "experiment_apis": {
