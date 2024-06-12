@@ -122,3 +122,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("overrideReturnAddress").checked =
     settings.overrideReturnAddress;
 });
+
+document.addEventListener("keydown", (event) => {
+  if (event.key == "Enter") {
+    saveSettings();
+  }
+  if (event.key == "Escape") {
+    window.close();
+  }
+});
