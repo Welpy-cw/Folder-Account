@@ -94,6 +94,7 @@ export async function getCustomComposeDetails(details, lastFocusedTabId) {
     newDetails.identityId = settings.identityId;
   }
 
+  newDetails.isModified = false;
   return newDetails;
 }
 
