@@ -38,7 +38,7 @@ export async function getCustomComposeDetails(details, lastFocusedTabId) {
   }
 
   if (!settings) {
-    const parentFolders = await messenger.folders.getParentFolders(folder);
+    const parentFolders = await messenger.folders.getParentFolders(folder.id);
     for (let parentFolder of parentFolders) {
       [settings] = Object.values(
         await browser.storage.local.get(parentFolder.id)
