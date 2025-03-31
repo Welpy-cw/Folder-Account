@@ -1,17 +1,3 @@
-export async function checkForMigration() {
-  const kAlreadyMigrated = "alreadyMigrated";
-  let results = await browser.storage.local.get(kAlreadyMigrated);
-  if (kAlreadyMigrated in results) {
-    return;
-  }
-
-  await browser.storage.local.set({ [kAlreadyMigrated]: true });
-  const settings = await messenger.FolderAccount.getFolderAccountSettings();
-  settings.forEach(async (value, key) => {
-    await browser.storage.local.set({ [key]: value });
-  });
-}
-
 export async function getCustomComposeDetails(details, lastFocusedTabId) {
   if (details.type == "draft") {
     return {};

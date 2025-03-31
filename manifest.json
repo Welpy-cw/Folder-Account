@@ -2,21 +2,22 @@
   "manifest_version": 2,
   "name": "Folder Account",
   "description": "Associate an account or identity with a folder",
-  "version": "12.0.1",
+  "version": "12.1",
   "author": "Hartmut Welpmann",
   "homepage_url": "https://github.com/Welpy-cw/Folder-Account",
   "browser_specific_settings": {
     "gecko": {
       "id": "{C8534C26-F59A-11DA-9804-B622A1EF5492}",
-      "strict_min_version": "127.0",
-      "strict_max_version": "137.0"
+      "strict_min_version": "136.0"
     }
   },
   "icons": {
     "64": "icon.png"
   },
   "background": {
-    "scripts": ["background.js"],
+    "scripts": [
+      "background.js"
+    ],
     "type": "module"
   },
   "options_ui": {
@@ -30,15 +31,5 @@
     "menus",
     "messagesRead",
     "storage"
-  ],
-  "experiment_apis": {
-    "FolderAccount": {
-      "schema": "api/FolderAccount/schema.json",
-      "parent": {
-        "scopes": ["addon_parent"],
-        "paths": [["FolderAccount"]],
-        "script": "api/FolderAccount/implementation.js"
-      }
-    }
-  }
+  ]
 }

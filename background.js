@@ -1,7 +1,5 @@
 import * as folderAccount from "./folderAccount.mjs";
 
-await folderAccount.checkForMigration();
-
 let lastFocusedWindow = messenger.windows.WINDOW_ID_NONE;
 messenger.windows.getCurrent().then((w) => (lastFocusedWindow = w.id));
 
