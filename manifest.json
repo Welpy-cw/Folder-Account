@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Folder Account",
   "description": "Associate an account or identity with a folder",
-  "version": "12.1",
+  "version": "12.2",
   "author": "Hartmut Welpmann",
   "homepage_url": "https://github.com/Welpy-cw/Folder-Account",
   "browser_specific_settings": {

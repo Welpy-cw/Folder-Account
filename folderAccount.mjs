@@ -1,9 +1,8 @@
-export async function getCustomComposeDetails(details, lastFocusedTabId) {
+export async function getCustomComposeDetails(details, folder) {
   if (details.type == "draft") {
     return {};
   }
 
-  let folder = (await messenger.mailTabs.get(lastFocusedTabId)).displayedFolder;
   if (!folder) {
     return {};
   }

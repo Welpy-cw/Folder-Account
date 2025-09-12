@@ -67,20 +67,26 @@ messenger.windows.onCreated.addListener(async (window) => {
     return;
   }
 
-  let [currentTab] = await messenger.tabs.query({ windowId: window.id });
-  let [lastFocusedMailTab] = await messenger.tabs.query({
+  const [currentTab] = await messenger.tabs.query({ windowId: window.id });
+  const [lastFocusedTab] = await messenger.tabs.query({
     active: true,
-    mailTab: true,
+    type: ["mail", "messageDisplay"],
     windowId: lastFocusedWindow,
   });
-  if (!currentTab || !lastFocusedMailTab) {
+  if (!currentTab || !lastFocusedTab) {
     return;
   }
+
+  const folder =
+    lastFocusedTab.type == "mail"
+      ? (await messenger.mailTabs.get(lastFocusedTab.id)).displayedFolder
+      : (await messenger.messageDisplay.getDisplayedMessage(lastFocusedTab.id))
+          .folder;
 
   const details = await messenger.compose.getComposeDetails(currentTab.id);
   const customDetails = await folderAccount.getCustomComposeDetails(
     details,
-    lastFocusedMailTab.id
+    folder
   );
   await messenger.compose.setComposeDetails(currentTab.id, customDetails);
 });
