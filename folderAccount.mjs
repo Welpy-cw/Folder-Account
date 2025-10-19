@@ -19,6 +19,7 @@ export async function getCustomComposeDetails(details, folder) {
       });
     if (relatedMessage.folder) {
       folder = relatedMessage.folder;
+      [settings] = Object.values(await browser.storage.local.get(folder.id));
     }
   }
 
