@@ -88,5 +88,9 @@ messenger.windows.onCreated.addListener(async (window) => {
     details,
     folder
   );
+  if (!Object.keys(customDetails).length) {
+    return;
+  }
+
   await messenger.compose.setComposeDetails(currentTab.id, customDetails);
 });
