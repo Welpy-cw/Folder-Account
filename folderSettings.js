@@ -1,11 +1,28 @@
 const useDefault = "Use default";
 const defaultId = "defaultId";
+const noSettings = "No settings (inherit from parent folder)";
+const inheritId = "inheritId";
 
 const saveSettings = async () => {
   const params = new URLSearchParams(window.location.search);
   const folderId = params.get("id");
 
   const identityId = document.getElementById("identityId").value;
+  if (identityId == inheritId) {
+    await browser.storage.local.remove(folderId);
+  } else {
+    await storeSettings(folderId, identityId);
+  }
+
+  const thisWindow = await messenger.windows.getCurrent();
+  browser.storage.local.set({
+    windowSize: { height: thisWindow.height, width: thisWindow.width },
+  });
+
+  window.close();
+};
+
+const storeSettings = async (folderId, identityId) => {
   const to = document.getElementById("to").value.trim();
   const replyTo = document.getElementById("replyTo").value.trim();
   const addToCcOnReply = document.getElementById("addToCcOnReply").checked;
@@ -41,13 +58,33 @@ const saveSettings = async () => {
   } else {
     await browser.storage.local.remove(folderId);
   }
+};
 
-  const thisWindow = await messenger.windows.getCurrent();
-  browser.storage.local.set({
-    windowSize: { height: thisWindow.height, width: thisWindow.width },
-  });
+const getInheritedFrom = async (folderId) => {
+  const parentFolders = await messenger.folders
+    .getParentFolders(folderId)
+    .catch(() => []);
+  for (const parentFolder of parentFolders) {
+    const [settings] = Object.values(
+      await browser.storage.local.get(parentFolder.id)
+    );
+    if (settings) {
+      return parentFolder;
+    }
+  }
+  return null;
+};
 
-  window.close();
+const updateInheritState = () => {
+  const inherit = document.getElementById("identityId").value == inheritId;
+  for (const fieldset of document.querySelectorAll("fieldset.settings")) {
+    fieldset.disabled = inherit;
+  }
+  document.getElementById("overrideReturnAddress").disabled = inherit;
+  document
+    .getElementById("overrideReturnAddressOption")
+    .classList.toggle("disabled", inherit);
+  document.getElementById("inheritInfo").hidden = !inherit;
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -71,9 +108,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   );
 
   const menuList = document.getElementById("identityId");
+  const inheritOption = document.createElement("option");
+  inheritOption.text = noSettings;
+  inheritOption.value = inheritId;
+  inheritOption.selected = !settings;
+  menuList.add(inheritOption);
+  menuList.appendChild(document.createElement("hr"));
   const option = document.createElement("option");
   option.text = useDefault;
   option.value = defaultId;
+  option.selected = settings && !settings.identityId;
   menuList.add(option);
   const accounts = await messenger.accounts.list(false);
   for (const account of accounts) {
@@ -107,6 +151,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       menuList.add(option);
     }
   }
+
+  // Settings with an identity that no longer exists: fall back to "Use default"
+  // instead of "No settings", so saving does not silently drop them.
+  if (settings && menuList.value == inheritId) {
+    menuList.value = defaultId;
+  }
+
+  const inheritedFrom = await getInheritedFrom(folderId);
+  document.getElementById("inheritInfo").textContent = inheritedFrom
+    ? `Currently inheriting from: ${inheritedFrom.name}`
+    : "No parent folder has settings";
+  menuList.addEventListener("change", updateInheritState);
+  updateInheritState();
 
   if (!settings) {
     return;

@@ -12,6 +12,15 @@ fieldset {
   margin-left: 4px;
 }
 
+#inheritInfo {
+  font-style: italic;
+}
+
+fieldset:disabled,
+.disabled {
+  opacity: 0.5;
+}
+
 .buttons {
   display: flex;
   justify-content: end;
