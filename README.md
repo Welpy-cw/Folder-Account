@@ -12,4 +12,6 @@ You can also set a default 'To' (as well as an additional 'Reply-To') address fo
 
 Various settings are available for replies/forwarding. In addition, if the current folder does not have specific addresses specified, the extension will check the parent folder, so you can control the settings for an entire branch of your folder tree at once.
 
+Thunderbird lays out a reply or forward (reply above or below the quote, signature position, quoting, HTML or plain text) according to the identity that is active when the compose window opens, and does not redo this when the identity is changed afterwards. If you enable "Rebuild replies and forwards with the composition settings of the folder identity" in the extension's options, the compose window is reopened with the folder's identity, so these settings are applied as well. The window briefly flickers when this happens, and a reply always quotes the whole message, even if only part of it was selected.
+
 Please submit issues at the project's [GitHub page](https://github.com/Welpy-cw/Folder-Account)

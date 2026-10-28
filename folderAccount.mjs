@@ -1,10 +1,10 @@
-export async function getCustomComposeDetails(details, folder) {
+export async function resolveSettings(details, folder) {
   if (details.type == "draft") {
-    return {};
+    return;
   }
 
   if (!folder) {
-    return {};
+    return;
   }
 
   let [settings] = Object.values(await browser.storage.local.get(folder.id));
@@ -35,6 +35,78 @@ export async function getCustomComposeDetails(details, folder) {
     }
   }
 
+  return settings;
+}
+
+// Thunderbird builds the body of a reply or forward (quote position,
+// signature placement, quoting, compose format) from the identity active when
+// the compose window opens, and does not rebuild it when the identity changes
+// later. Returns how to reopen the message with the folder's identity, or null
+// if there is nothing to gain or the original compose action cannot be
+// reproduced.
+export async function getReopenAction(tabId, details, settings) {
+  if (details.type != "reply" && details.type != "forward") {
+    return null;
+  }
+
+  if (!settings?.identityId || settings.identityId == details.identityId) {
+    return null;
+  }
+
+  if (details.type == "reply" && settings.overrideReturnAddress) {
+    return null;
+  }
+
+  // Undefined e.g. for messages opened from file.
+  if (!details.relatedMessageId) {
+    return null;
+  }
+
+  const messageId = details.relatedMessageId;
+
+  // The compose API does not tell how the window was opened, so infer it.
+  if (details.type == "forward") {
+    // An inline forward carries the attachments of the original message;
+    // anything else must be forwarded messages.
+    const originalNames = (
+      await messenger.messages.listAttachments(messageId)
+    ).map((attachment) => attachment.name);
+    const forwarded = (await messenger.compose.listAttachments(tabId)).filter(
+      (attachment) => !originalNames.includes(attachment.name)
+    );
+    // Several messages forwarded as attachments cannot be reproduced.
+    if (forwarded.length > 1) {
+      return null;
+    }
+    return {
+      method: "beginForward",
+      messageId,
+      type: forwarded.length ? "forwardAsAttachment" : "forwardInline",
+    };
+  }
+
+  if (details.to.length > 1 || details.cc.length) {
+    return { method: "beginReply", messageId, type: "replyToAll" };
+  }
+
+  // A reply to sender only differs from a reply to list by its recipient.
+  const { headers } = await messenger.messages.getFull(messageId);
+  const listAddress = headers["list-post"]?.[0]
+    ?.match(/mailto:([^>,\s]+)/i)?.[1]
+    ?.toLowerCase();
+  const [recipient] = details.to;
+  const type =
+    listAddress &&
+    typeof recipient == "string" &&
+    recipient.toLowerCase().includes(listAddress)
+      ? "replyToList"
+      : "replyToSender";
+
+  return { method: "beginReply", messageId, type };
+}
+
+export async function getCustomComposeDetails(details, folder) {
+  const settings = await resolveSettings(details, folder);
   if (!settings) {
     return {};
   }

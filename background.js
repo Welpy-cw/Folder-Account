@@ -62,6 +62,37 @@ messenger.menus.onClicked.addListener(async (info, tab) => {
   });
 });
 
+// Replaces the compose window by one opened with the folder's identity, so
+// Thunderbird builds the body according to that identity's settings. The new
+// window passes through the onCreated listener again, where the remaining
+// settings are applied.
+async function reopenWithIdentity(windowId, tabId, details, folder) {
+  const { reopenWithIdentity } = await browser.storage.local.get({
+    reopenWithIdentity: false,
+  });
+  if (!reopenWithIdentity) {
+    return false;
+  }
+
+  const settings = await folderAccount.resolveSettings(details, folder);
+  const action = await folderAccount.getReopenAction(tabId, details, settings);
+  if (!action) {
+    return false;
+  }
+
+  try {
+    await messenger.compose[action.method](action.messageId, action.type, {
+      identityId: settings.identityId,
+    });
+  } catch (e) {
+    console.warn("Could not reopen compose window:", e);
+    return false;
+  }
+
+  await messenger.windows.remove(windowId);
+  return true;
+}
+
 messenger.windows.onCreated.addListener(async (window) => {
   if (window.type != "messageCompose") {
     return;
@@ -84,6 +115,10 @@ messenger.windows.onCreated.addListener(async (window) => {
           .folder;
 
   const details = await messenger.compose.getComposeDetails(currentTab.id);
+  if (await reopenWithIdentity(window.id, currentTab.id, details, folder)) {
+    return;
+  }
+
   const customDetails = await folderAccount.getCustomComposeDetails(
     details,
     folder
