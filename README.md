@@ -10,6 +10,6 @@ You can choose which of your accounts or identities will be used when composing,
 
 You can also set a default 'To' (as well as an additional 'Reply-To') address for newly composed messages based on which folder you are working in. This can be very useful for mailing lists - if you create a new message in the mailing list folder, your message would automatically be addressed correctly.
 
-Various settings are available for replies/forwarding. In addition, if the current folder does not have specific addresses specified, the extension will check the parent folder, so you can control the settings for an entire branch of your folder tree at once.
+Various settings are available for replies/forwarding. In addition, if the current folder does not have specific addresses specified, the extension will check the parent folder, so you can control the settings for an entire branch of your folder tree at once. Inheritance is all-or-nothing: a folder with any settings of its own does not inherit from its parent. Select "No settings (inherit from parent folder)" in the folder's dialog to clear its settings and inherit again.
 
 Please submit issues at the project's [GitHub page](https://github.com/Welpy-cw/Folder-Account)

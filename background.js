@@ -22,6 +22,10 @@ messenger.folders.onRenamed.addListener(
   }
 );
 
+messenger.folders.onMoved.addListener(async (originalFolder, movedFolder) => {
+  await folderAccount.updateSettings(originalFolder, movedFolder);
+});
+
 const menuId = "folderAccount";
 
 messenger.menus.create({

@@ -17,7 +17,7 @@ export async function getCustomComposeDetails(details, folder) {
       .catch((e) => {
         console.warn("Could not find related message:", e);
       });
-    if (relatedMessage.folder) {
+    if (relatedMessage?.folder) {
       folder = relatedMessage.folder;
       [settings] = Object.values(await browser.storage.local.get(folder.id));
     }
@@ -84,14 +84,25 @@ export async function getCustomComposeDetails(details, folder) {
   return newDetails;
 }
 
-export async function updateSettings(originalFolder, renamedFolder) {
-  const [settings] = Object.values(
-    await browser.storage.local.get(originalFolder.id)
-  );
-  if (!settings) {
+// Move the settings of a renamed or moved folder, and of all its subfolders,
+// to their new folder ids.
+export async function updateSettings(originalFolder, newFolder) {
+  const oldId = originalFolder.id;
+  const newId = newFolder.id;
+  const stored = await browser.storage.local.get(null);
+
+  let updated = {};
+  let removed = [];
+  for (const [key, settings] of Object.entries(stored)) {
+    if (key == oldId || key.startsWith(oldId + "/")) {
+      updated[newId + key.slice(oldId.length)] = settings;
+      removed.push(key);
+    }
+  }
+  if (!removed.length) {
     return;
   }
 
-  await browser.storage.local.set({ [renamedFolder.id]: settings });
-  await browser.storage.local.remove(originalFolder.id);
+  await browser.storage.local.set(updated);
+  await browser.storage.local.remove(removed);
 }
