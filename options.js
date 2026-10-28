@@ -1,6 +1,7 @@
 const DEFAULT_PREFERENCES = {
   sortIdentities: false,
   useForArchive: false,
+  reopenWithIdentity: false,
 };
 
 async function restore_options() {
